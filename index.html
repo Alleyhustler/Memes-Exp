@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> AI | Memecoin Visualizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3366ff;
+            --primary-dark: #2952cc;
+            --secondary: #111827;
+            --background: #1f2937;
+            --card-bg: #1f2937;
+            --text: #1f2937;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Alegreya Sans SC", sans-serif;
+        }
+        
+        body {
+            background-color: #050505;
+            color: var(--text);
+            line-height: 1.5;
+        }
+        
+        header {
+            background-color: #050505;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--secondary);
+        }
+        
+        .logo svg {
+            height: 1rem;
+            width: 1rem;
+            color: var(--primary);
+        }
+
+        
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .card {
+            background-color: #050505;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h1, h2, h3 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            background-color: #050505;
+            color: var(--text);
+            font-size: 1rem;
+            transition: border-color 0.15s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(51, 102, 255, 0.1);
+        }
+        
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            border: none;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background-color: 050505;
+        }
+        
+        .btn-connect {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #9945ff;
+            color: white;
+        }
+        
+        .btn-connect:hover {
+            background-color: #8035db;
+        }
+        
+        .btn-icon {
+            margin-right: 0.5rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .result-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: 050505;
+            border: 2px dashed var(--border);
+            border-radius: 0.5rem;
+            padding: 3rem 2rem;
+            min-height: 400px;
+            text-align: center;
+        }
+        
+        .result-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        footer {
+            background-color: #050505;
+            border-top: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .socials {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background-color: 050505;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .loading {
+            display: none;
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid 050505;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 1rem 0;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .token-info {
+            margin-top: 1rem;
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            padding: 1rem;
+            background-color: #050505;
+            display: none;
+        }
+        
+        .token-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        
+        .token-info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .token-info-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .token-info-value {
+            font-weight: 500;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+        .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between image and text */
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.logo img {
+  width: 50px; /* Adjust image size */
+  height: 50px;
+  object-fit: contain; /* Keep image aspect ratio */
+}
+
+.logo:hover {
+  color: #FF5722; /* Text color change on hover */
+  transform: scale(1.02); /* Subtle zoom effect */
+  transition: all 0.2s ease-in-out;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="Untitled_Project__15_-removebg-preview.png" alt="Icon description" />
+
+            Memes Experiment Vision AI
+        </div>
+        <div class="header-actions">
+            <button class="btn-connect">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M4 18h12l4 -4h-12z"></path> <path d="M8 14l-4 -4h12l4 4"></path> <path d="M16 10l4 -4h-12l-4 4"></path> </svg> 
+                Connect Phantom
+            </button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1>Memes Experiment</h1>
+        <p>Generate unique AI-powered visualizations for any memecoin by entering its contract address and ticker symbol.</p>
+        
+        <div class="grid">
+            <div class="card">
+                <div class="tabs">
+                    <div class="tab active">Single Token</div>
+                    <div class="tab">Comparison</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="contract-address">Contract Address (CA)</label>
+                    <input type="text" id="contract-address" placeholder="Enter contract address (s3d...)" />
+                </div>
+                
+                <div class="input-group">
+                    <label for="ticker">Ticker Symbol</label>
+                    <input type="text" id="ticker" placeholder="E.g. PEPE, DOGE, SHIB" />
+                </div>
+                
+                <button id="generate-btn" class="btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
+                        <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
+                        <line x1="7.38" y1="12" x2="13.12" y2="2.06"></line>
+                        <line x1="9.69" y1="16" x2="3.95" y2="6.06"></line>
+                        <line x1="14.31" y1="16" x2="2.83" y2="16"></line>
+                        <line x1="16.62" y1="12" x2="10.88" y2="21.94"></line>
+                    </svg>
+                    Generate Visualization
+                </button>
+                <button id="generate-btn" class="btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                        <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
+                        <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
+                        <line x1="7.38" y1="12" x2="13.12" y2="2.06"></line>
+                        <line x1="9.69" y1="16" x2="3.95" y2="6.06"></line>
+                        <line x1="14.31" y1="16" x2="2.83" y2="16"></line>
+                        <line x1="16.62" y1="12" x2="10.88" y2="21.94"></line>
+                    </svg>
+                    Claim Rewards
+                </button>
+            </div>
+            
+            <div class="card">
+                <h2>AI Visualization Result</h2>
+                <div class="result-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <p>Enter a contract address and ticker to generate an AI visualization</p>
+                    <div class="loading" id="loading-spinner"></div>
+                    <img id="result-image" class="result-image" src="/api/placeholder/400/320" alt="Generated memecoin visualization" />
+                    
+                    <div class="token-info" id="token-info">
+                        <h3 id="token-name">Token Name</h3>
+                        <div class="token-info-grid">
+                            <div class="token-info-item">
+                                <span class="token-info-label">Contract</span>
+                                <span class="token-info-value" id="info-contract">-</span>
+                            </div>
+                            <div class="token-info-item">
+                                <span class="token-info-label">Symbol</span>
+                                <span class="token-info-value" id="info-symbol">-</span>
+                            </div>
+                            <div class="token-info-item">
+                                <span class="token-info-label">Network</span>
+                                <span class="token-info-value" id="info-network">-</span>
+                            </div>
+                            <div class="token-info-item">
+                                <span class="token-info-label">Generation Date</span>
+                                <span class="token-info-value" id="info-date">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 CryptoVision AI - Advanced Memecoin Visualization Platform</p>
+        <div class="socials">
+            <a href="https://twitter.com/MemesExperiment" class="social-link" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                </svg>
+            </a>
+            <a href="https://t.me/memesexpe" class="social-link" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2.5 12a9.5 9.5 0 1 0 19 0 9.5 9.5 0 1 0-19 0"></path>
+                    <path d="M9 12a3 3 0 1 0 6 0 3 3 0 1 0-6 0"></path>
+                    <path d="M17.7 17.7L16.6 16.6"></path>
+                    <path d="M12 19.5v-1.5"></path>
+                    <path d="M6.3 17.7L7.4 16.6"></path>
+                    <path d="M4.5 12H6"></path>
+                    <path d="M6.3 6.3L7.4 7.4"></path>
+                    <path d="M12 4.5V6"></path>
+                    <path d="M17.7 6.3L16.6 7.4"></path>
+                    <path d="M19.5 12H18"></path>
+                </svg>
+            </a>
+            <a href="https://www.yoursite.com/buy" class="buy-button" target="_blank">Buy Now</a>
+        </div>
+        
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generate-btn');
+            const contractInput = document.getElementById('contract-address');
+            const tickerInput = document.getElementById('ticker');
+            const resultImage = document.getElementById('result-image');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const tokenInfo = document.getElementById('token-info');
+            const tokenName = document.getElementById('token-name');
+            const infoContract = document.getElementById('info-contract');
+            const infoSymbol = document.getElementById('info-symbol');
+            const infoNetwork = document.getElementById('info-network');
+            const infoDate = document.getElementById('info-date');
+            const tabs = document.querySelectorAll('.tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            generateBtn.addEventListener('click', function() {
+                const contractAddress = contractInput.value.trim();
+                const ticker = tickerInput.value.trim();
+                
+                if (!contractAddress || !ticker) {
+                    alert('Please enter both contract address and ticker symbol');
+                    return;
+                }
+                
+                // Show loading state
+                loadingSpinner.style.display = 'block';
+                resultImage.style.display = 'none';
+                tokenInfo.style.display = 'none';
+                
+                // Simulate AI generation
+                setTimeout(() => {
+                    // Hide loading state
+                    loadingSpinner.style.display = 'none';
+                    
+                    // Show result
+                    resultImage.src = getRandomImage(ticker);
+                    resultImage.style.display = 'block';
+                    
+                    // Show token info
+                    tokenName.textContent = ticker.toUpperCase() + ' Token';
+                    infoContract.textContent = contractAddress.substring(0, 6) + '...' + contractAddress.substring(contractAddress.length - 4);
+                    infoSymbol.textContent = ticker.toUpperCase();
+                    
+                    // Random network selection
+                    const networks = ['Ethereum', 'Solana', 'BSC', 'Polygon'];
+                    infoNetwork.textContent = networks[Math.floor(Math.random() * networks.length)];
+                    
+                    // Current date
+                    const now = new Date();
+                    infoDate.textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+                    
+                    tokenInfo.style.display = 'block';
+                }, 2000);
+            });
+            
+            // Function to generate random image based on ticker
+            function getRandomImage(ticker) {
+                const seed = ticker.toLowerCase();
+                const colors = [
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+                    '#9966FF', '#FF9F40', '#8AC249', '#EA526F'
+                ];
+                
+                const color = colors[Math.floor(hashCode(seed) % colors.length)];
+                return `/api/placeholder/400/320?text=${ticker.toUpperCase()}&bgcolor=${color.substring(1)}`;
+            }
+            
+            // Simple hash function
+            function hashCode(str) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    const char = str.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                return Math.abs(hash);
+            }
+            
+            // Connect wallet button functionality
+            const connectButton = document.querySelector('.btn-connect');
+            connectButton.addEventListener('click', function() {
+                alert('Phantom wallet connection feature will be added once on DEX');
+                this.textContent = 'Connected: SOON';
+                this.style.backgroundColor = '#4CAF50';
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const connectButton = document.getElementById('connect-button');
+
+            connectButton.addEventListener('click', async function() {
+                if (window.solana && window.solana.isPhantom) {
+                    try {
+                        // Connect to Phantom Wallet
+                        const resp = await window.solana.connect();
+                        const publicKey = resp.publicKey.toString();
+                        
+                        // Update button text and style
+                        connectButton.textContent = `Connected: ${publicKey.substring(0, 6)}...`;
+                        connectButton.style.backgroundColor = '#4CAF50';
+                        
+                        // You can now use the publicKey for further transactions or queries
+                        console.log('Connected with Public Key:', publicKey);
+                    } catch (err) {
+                        console.error('Connection error:', err);
+                        alert('Failed to connect to Phantom Wallet.');
+                    }
+                } else {
+                    alert('Phantom Wallet not detected. Please install Phantom Wallet.');
+                    window.open('https://phantom.app/', '_blank');
+                }
+            });
+    </script>
+    
+    <!-- Phantom Wallet SDK -->
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+    <script>
+        // Initialize Phantom Wallet
+        if (window.solana && window.solana.isPhantom) {
+            console.log('Phantom Wallet is installed!');
+        } else {
+            console.log('Phantom Wallet is not installed.');
+        }
+    </script>
+    
+</body>
+</html>
